@@ -18,7 +18,6 @@ namespace GutterLines
 
         public void GetProcess()
         {
-
             try
             {
                 var prosesses = Process.GetProcessesByName("Ragexe");
