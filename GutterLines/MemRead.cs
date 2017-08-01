@@ -12,9 +12,9 @@ namespace GutterLines
 
         private int processNum;
         private Process curProcess;
-        private int latAddress;
-        private int lonAddress;
-        private int nameAddress;
+        private const int latAddress = 0x00D26694;
+        private const int lonAddress = 0x00D26698;
+        private const int nameAddress = 0x00D3CBE0;
 
         public void GetProcess()
         {
@@ -29,25 +29,6 @@ namespace GutterLines
                 processNum = 0;
                 curProcess = null;
             }
-        }
-
-        public void UpdateAddresses()
-        {
-            if (curProcess == null) return;
-            var roStart = curProcess.MainModule.BaseAddress;
-
-            var latlonBaseOffset = 0x002BCD74;
-            var latOffsets = new[] { 0x8 };
-            var lonOffsets = new[] { 0xC };
-            var nameBaseOffset = 0x0039D7A4;
-            var nameOffsets = new[] { 0x0 };
-            var latlonBaseAddress = roStart.ToInt32() + latlonBaseOffset;
-
-            latAddress = GetRealAddress(curProcess.Handle, latlonBaseAddress, latOffsets);
-            lonAddress = GetRealAddress(curProcess.Handle, latlonBaseAddress, lonOffsets);
-
-            var nameBaseAddress = roStart.ToInt32() + nameBaseOffset;
-            nameAddress = GetRealAddress(curProcess.Handle, nameBaseAddress, nameOffsets);
         }
 
         public GameInfo GetValues()
@@ -84,16 +65,5 @@ namespace GutterLines
             ReadProcessMemory(process, baseAddress, buffer, 4, out IntPtr bytesRead);
             return BitConverter.ToInt32(buffer, 0);
         }
-
-        public static int GetRealAddress(IntPtr process, int baseAddress, int[] offsets)
-        {
-            var address = baseAddress;
-            foreach (var offset in offsets)
-            {
-                address = ReadInt(process, (IntPtr)address) + offset;
-            }
-            return address;
-        }
-
     }
 }

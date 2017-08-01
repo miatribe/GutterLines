@@ -31,7 +31,6 @@ namespace GutterLines
             InitializeComponent();
             memRead = new MemRead();
             memRead.GetProcess();
-            memRead.UpdateAddresses();
             var Timer = new Timer()
             {
                 Interval = (250)
@@ -130,7 +129,6 @@ namespace GutterLines
         private void NextClientBtn_Click(object sender, EventArgs e)
         {
             memRead.GetProcess();
-            memRead.UpdateAddresses();
         }
     }
 }
