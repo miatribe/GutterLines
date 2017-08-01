@@ -11,11 +11,8 @@ Arrow at bottom right can be used to cycle between RO clients
 
 ![preview](https://raw.githubusercontent.com/miatribe/gutterlines/master/GutterLinesPrev.png)
 
-##TODO
-
-*Move lat,lon, and name address to a config file so can be updated by user.
-
-*Make alternate larger screen.
-
-*Show error when not ran as admin.
+## TODO
+* Move lat,lon, and name address to a config file so can be updated by user.
+* Make alternate larger screen.
+* Show error when not ran as admin.
 
