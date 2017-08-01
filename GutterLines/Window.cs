@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Security.Principal;
 using System.Windows.Forms;
 
 namespace GutterLines
@@ -12,8 +13,6 @@ namespace GutterLines
         private const int gridScale = 4;
         private const int lineOffset = gridScale / 2;
         private const int gridMax = gridScale * 40;
-        private const int WM_NCLBUTTONDOWN = 0xA1;
-        private const int HT_CAPTION = 0x2;
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
@@ -23,7 +22,22 @@ namespace GutterLines
         [STAThread]
         static void Main()
         {
-            Application.Run(new Window());
+            try
+            {
+                if ((new WindowsPrincipal(WindowsIdentity.GetCurrent())).IsInRole(WindowsBuiltInRole.Administrator))
+                {
+                    Application.Run(new Window());
+                }
+                else
+                {
+                    MessageBox.Show("GutterLines must be ran as Administrator.", "Privilege Error");
+                    Application.Exit();
+                }
+            }
+            catch
+            {
+                Application.Exit();
+            }
         }
 
         public Window()
@@ -117,13 +131,13 @@ namespace GutterLines
             if (e.Button == MouseButtons.Left)
             {
                 ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                SendMessage(Handle, 0xA1, 0x2, 0);
             }
         }
 
         private void ExitBtn_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
 
         private void NextClientBtn_Click(object sender, EventArgs e)
