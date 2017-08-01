@@ -5,7 +5,7 @@ Gutter line viewer for Ragnarok:REstart
 
 [Youtube demo](https://youtu.be/hggU2WS2KyU)
 
-Must be ran as admin.
+#### Must be ran as admin.
 
 Arrow at bottom right can be used to cycle between RO clients
 
