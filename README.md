@@ -14,5 +14,5 @@ Arrow at bottom right can be used to cycle between RO clients
 ## TODO
 * Move lat,lon, and name address to a config file so can be updated by user.
 * Make alternate larger screen.
-* Show error when not ran as admin.
+* ~~Show error when not ran as admin.~~
 
