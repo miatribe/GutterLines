@@ -12,9 +12,9 @@ namespace GutterLines
 
         private int processNum;
         private Process curProcess;
-        private const int latAddress = 0x00D26694;
-        private const int lonAddress = 0x00D26698;
-        private const int nameAddress = 0x00D3CBE0;
+        private const int latAddress = 0x00D25694;
+        private const int lonAddress = 0x00D25698;
+        private const int nameAddress = 0x00D3BBE0;
 
         public void GetProcess()
         {
