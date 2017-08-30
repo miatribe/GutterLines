@@ -1,7 +1,6 @@
 # GutterLines
 Gutter line viewer for Ragnarok:REstart
-
-[Download link](https://github.com/miatribe/GutterLines/releases)
+[Download link](https://github.com/miatribe/GutterLines/releases/download/1.2/GutterLinesV1.2.zip)
 
 [Youtube demo](https://youtu.be/hggU2WS2KyU)
 
