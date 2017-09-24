@@ -76,32 +76,14 @@ namespace GutterLines
         {
             Graphics g = gridMap.CreateGraphics();
             g.Clear(gridMap.BackColor);
-            //get xGutter
-            int xGutterGridR1 = GetGutterLinePosX(playerX, 0) * gridScale;
-            int xGutterGridB1 = GetGutterLinePosX(playerX, 1) * gridScale;
-            int xGutterGridB2 = GetGutterLinePosX(playerX, 2) * gridScale;
-            int xGutterGridB3 = GetGutterLinePosX(playerX, 3) * gridScale;
-            int xGutterGridB4 = GetGutterLinePosX(playerX, 4) * gridScale;
-            //get yGutter
-            int yGutterGridR1 = GetGutterLinePosY(playerY, 0) * gridScale;
-            int yGutterGridB1 = GetGutterLinePosY(playerY, -1) * gridScale;
-            int yGutterGridB2 = GetGutterLinePosY(playerY, -2) * gridScale;
-            int yGutterGridB3 = GetGutterLinePosY(playerY, -3) * gridScale;
-            int yGutterGridB4 = GetGutterLinePosY(playerY, -4) * gridScale;
-            //draw x blue gutters
-            g.DrawLine(new Pen(Brushes.Blue, gridScale), xGutterGridB1, 0, xGutterGridB1, gridMax);
-            g.DrawLine(new Pen(Brushes.Blue, gridScale), xGutterGridB2, 0, xGutterGridB2, gridMax);
-            g.DrawLine(new Pen(Brushes.Blue, gridScale), xGutterGridB3, 0, xGutterGridB3, gridMax);
-            g.DrawLine(new Pen(Brushes.Blue, gridScale), xGutterGridB4, 0, xGutterGridB4, gridMax);
-            //draw y blue gutters
-            g.DrawLine(new Pen(Brushes.Blue, gridScale), 0, yGutterGridB1, gridMax, yGutterGridB1);
-            g.DrawLine(new Pen(Brushes.Blue, gridScale), 0, yGutterGridB2, gridMax, yGutterGridB2);
-            g.DrawLine(new Pen(Brushes.Blue, gridScale), 0, yGutterGridB3, gridMax, yGutterGridB3);
-            g.DrawLine(new Pen(Brushes.Blue, gridScale), 0, yGutterGridB4, gridMax, yGutterGridB4);
-            //draw x red gutter
-            g.DrawLine(new Pen(Brushes.Red, gridScale), xGutterGridR1, 0, xGutterGridR1, gridMax);
-            //draw y red gutter
-            g.DrawLine(new Pen(Brushes.Red, gridScale), 0, yGutterGridR1, gridMax, yGutterGridR1);
+            for (int i = 4; i >= 0; i--)
+            {
+                var gutterPosX = GetGutterLinePosX(playerX, i) * gridScale;
+                var gutterPosY = GetGutterLinePosY(playerY, i * -1) * gridScale;
+                Pen pen = new Pen(i == 0 ? Brushes.Red : Brushes.Blue, gridScale);
+                g.DrawLine(pen, new Point(gutterPosX, 0), new Point(gutterPosX, gridMax));
+                g.DrawLine(pen, new Point(0, gutterPosY), new Point(gridMax, gutterPosY));
+            }
             //draw players dot
             g.FillRectangle(Brushes.Black, 20 * gridScale - lineOffset, 20 * gridScale - lineOffset, gridScale, gridScale);
         }
@@ -134,12 +116,10 @@ namespace GutterLines
                 SendMessage(Handle, 0xA1, 0x2, 0);
             }
         }
-
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
-
         private void NextClientBtn_Click(object sender, EventArgs e)
         {
             memRead.GetProcess();
