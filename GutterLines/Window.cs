@@ -78,17 +78,18 @@ namespace GutterLines
             g.Clear(gridMap.BackColor);
             for (int i = 4; i >= 0; i--)
             {
-                var gutterPosX = GetGutterLinePosX(playerX, i) * gridScale;
-                var gutterPosY = GetGutterLinePosY(playerY, i * -1) * gridScale;
+                var gutterPosX = GetGutterLinePos(playerX, i) * gridScale;
+                var gutterPosY = GetGutterLinePos(playerY, i) * gridScale;
                 Pen pen = new Pen(i == 0 ? Brushes.Red : Brushes.Blue, gridScale);
                 g.DrawLine(pen, new Point(gutterPosX, 0), new Point(gutterPosX, gridMax));
-                g.DrawLine(pen, new Point(0, gutterPosY), new Point(gridMax, gutterPosY));
+                //RO's 0,0 is bottom left, Winforms Picture box's 0,0 is top left. So we flip our Y
+                g.DrawLine(pen, new Point(0, gridMax - gutterPosY), new Point(gridMax, gridMax - gutterPosY));
             }
             //draw players dot
             g.FillRectangle(Brushes.Black, 20 * gridScale - lineOffset, 20 * gridScale - lineOffset, gridScale, gridScale);
         }
 
-        private int GetGutterLinePosX(int playerX, int mod)
+        private int GetGutterLinePos(int playerX, int mod)
         {
             int Gutter = playerX + (40 - (playerX % 40));
             if (Gutter + mod > playerX + 20)
@@ -98,16 +99,7 @@ namespace GutterLines
             return Gutter - playerX + 20 + mod;
         }
 
-        private int GetGutterLinePosY(int playerY, int mod)
-        {
-            int Gutter = playerY + (40 - (playerY % 40));
-            if (Gutter - mod > playerY + 20)
-            {
-                Gutter = playerY - (playerY % 40);
-            }
-            return playerY - Gutter + 20 + mod;
-        }
-
+        #region form controls
         private void Window_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -124,6 +116,7 @@ namespace GutterLines
         {
             memRead.GetProcess();
         }
+        #endregion
     }
 }
 
