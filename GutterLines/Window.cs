@@ -89,14 +89,14 @@ namespace GutterLines
             g.FillRectangle(Brushes.Black, 20 * gridScale - lineOffset, 20 * gridScale - lineOffset, gridScale, gridScale);
         }
 
-        private int GetGutterLinePos(int playerX, int mod)
+        private int GetGutterLinePos(int playerAxisPos, int mod)
         {
-            int Gutter = playerX + (40 - (playerX % 40));
-            if (Gutter + mod > playerX + 20)
+            int Gutter = playerAxisPos + (40 - (playerAxisPos % 40));
+            if (Gutter + mod > playerAxisPos + 20)
             {
-                Gutter = playerX - (playerX % 40);
+                Gutter = playerAxisPos - (playerAxisPos % 40);
             }
-            return Gutter - playerX + 20 + mod;
+            return Gutter - playerAxisPos + 20 + mod;
         }
 
         #region form controls
