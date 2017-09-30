@@ -43,6 +43,8 @@ namespace GutterLines
         public Window()
         {
             InitializeComponent();
+            BackColor = Color.Pink;
+            TransparencyKey = Color.Pink;
             memRead = new MemRead();
             memRead.GetProcess();
             var Timer = new Timer()
