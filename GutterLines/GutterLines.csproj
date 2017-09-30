@@ -85,6 +85,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SigScan.cs" />
     <Compile Include="Window.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -12,9 +12,9 @@ namespace GutterLines
 
         private int processNum;
         private Process curProcess;
-        private const int latAddress = 0x00D2DF74;
-        private const int lonAddress = 0x00D2DF78;
-        private const int nameAddress = 0x00D44730;
+        private IntPtr latAddress;
+        private IntPtr lonAddress;
+        private IntPtr nameAddress;
 
         public void GetProcess()
         {
@@ -29,16 +29,27 @@ namespace GutterLines
                 processNum = 0;
                 curProcess = null;
             }
+            if (curProcess != null)
+            {
+                SigScan mss = new SigScan
+                {
+                    Process = curProcess,
+                    StartingAddress = (IntPtr)0x5B8D80,
+                    DumpSize = 0x5B8D80
+                };
+                latAddress = mss.FindAddress(new byte[] { 0x89, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x89, 0x3D }, "xx????xx", 2);
+                lonAddress = latAddress + 4;
+                nameAddress = mss.FindAddress(new byte[] { 0x0F, 0xB6, 0x84, 0x0F, 0x00, 0x00, 0x00, 0x00, 0x30, 0x81 }, "xxxx????xx", 4);
+            }
         }
 
         public GameInfo GetValues()
         {
             try
             {
-                var lat = ReadInt(curProcess.Handle, (IntPtr)latAddress);
-                var lon = ReadInt(curProcess.Handle, (IntPtr)lonAddress);
-                var name = ReadString(curProcess.Handle, (IntPtr)nameAddress);
-
+                var lat = ReadInt(curProcess.Handle, latAddress);
+                var lon = ReadInt(curProcess.Handle, lonAddress);
+                var name = ReadString(curProcess.Handle, nameAddress);
                 return new GameInfo
                 {
                     Name = name,
