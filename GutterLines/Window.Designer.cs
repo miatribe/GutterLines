@@ -124,7 +124,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
-            this.BackgroundImage = global::GutterLines.Properties.Resources.back2;
+            this.BackgroundImage = global::GutterLines.Properties.Resources.back;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(158, 195);
             this.Controls.Add(this.NextClientBtn);
