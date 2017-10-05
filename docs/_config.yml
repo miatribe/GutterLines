@@ -1,2 +1,5 @@
-theme: jekyll-theme-slate
+title: GutterLines
+description: GutterLines for Ragnarok:REStart
 show_downloads: true
+google_analytics:
+theme: jekyll-theme-slate
