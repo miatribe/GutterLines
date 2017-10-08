@@ -8,7 +8,6 @@ namespace GutterLines
     {
         private byte[] _MemoryDump;
         public Process Process { get; set; }
-        public IntPtr StartingAddress { get; set; }
         public int DumpSize { get; set; }
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -21,7 +20,7 @@ namespace GutterLines
                 if (!GetMemoryDump()) return IntPtr.Zero;
                 for (int i = 0; i < _MemoryDump.Length; i++)
                 {
-                    if (CheckMask(i, bytePattern, mask)) return GetAddressAtAddress((StartingAddress + i) + bytesToSkip);
+                    if (CheckMask(i, bytePattern, mask)) return GetAddressAtAddress((Process.MainModule.BaseAddress + i) + bytesToSkip);
                 }
                 return IntPtr.Zero;
             }
@@ -43,7 +42,7 @@ namespace GutterLines
         private bool GetMemoryDump()
         {
             _MemoryDump = new byte[DumpSize];
-            return ReadProcessMemory(Process.Handle, StartingAddress, _MemoryDump, DumpSize, out IntPtr BytesRead);
+            return ReadProcessMemory(Process.Handle, Process.MainModule.BaseAddress, _MemoryDump, DumpSize, out IntPtr BytesRead);
         }
 
         private IntPtr GetAddressAtAddress(IntPtr baseAddress)

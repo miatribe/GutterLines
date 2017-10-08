@@ -31,15 +31,10 @@ namespace GutterLines
             }
             if (curProcess != null)
             {
-                SigScan mss = new SigScan
-                {
-                    Process = curProcess,
-                    StartingAddress = (IntPtr)0x5B8D80,
-                    DumpSize = 0x5B8D80
-                };
-                latAddress = mss.FindAddress(new byte[] { 0x89, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x89, 0x3D }, "xx????xx", 2);
+                SigScan sigScan = new SigScan {Process = curProcess, DumpSize = 0x5B8D80};
+                latAddress = sigScan.FindAddress(new byte[] { 0x89, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x89, 0x3D, 0x00, 0x00, 0x00, 0x00, 0x85, 0xD2 }, "xx????xx????xx", 2);
                 lonAddress = latAddress + 4;
-                nameAddress = mss.FindAddress(new byte[] { 0x0F, 0xB6, 0x84, 0x0F, 0x00, 0x00, 0x00, 0x00, 0x30, 0x81 }, "xxxx????xx", 4);
+                nameAddress = sigScan.FindAddress(new byte[] { 0x0F, 0xB6, 0x84, 0x0F, 0x00, 0x00, 0x00, 0x00, 0x30, 0x81 }, "xxxx????xx", 4);
             }
         }
 
