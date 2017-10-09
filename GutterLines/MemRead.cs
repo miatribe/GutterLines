@@ -42,14 +42,11 @@ namespace GutterLines
         {
             try
             {
-                var lat = ReadInt(curProcess.Handle, latAddress);
-                var lon = ReadInt(curProcess.Handle, lonAddress);
-                var name = ReadString(curProcess.Handle, nameAddress);
                 return new GameInfo
                 {
-                    Name = name,
-                    Lat = lat,
-                    Lon = lon
+                    Name = ReadString(curProcess.Handle, nameAddress),
+                    Lat = ReadInt(curProcess.Handle, latAddress),
+                    Lon = ReadInt(curProcess.Handle, lonAddress)
                 };
             }
             catch
