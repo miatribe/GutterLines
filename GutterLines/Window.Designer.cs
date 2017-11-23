@@ -140,6 +140,7 @@
             this.Name = "Window";
             this.Text = "GutterLines";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Window_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Window_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.gridMap)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

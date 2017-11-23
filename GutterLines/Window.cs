@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Security.Principal;
 using System.Windows.Forms;
@@ -13,6 +15,8 @@ namespace GutterLines
         private const int gridScale = 4;
         private const int lineOffset = gridScale / 2;
         private const int gridMax = gridScale * 40;
+        private MenuItem alertToggle;
+        private bool flashAlert;
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
@@ -43,6 +47,9 @@ namespace GutterLines
         public Window()
         {
             InitializeComponent();
+            CreateContextMenu();
+            StartPosition = FormStartPosition.Manual;
+            SetWindowPos();
             BackColor = Color.Pink;
             TransparencyKey = Color.Pink;
             memRead = new MemRead();
@@ -53,6 +60,49 @@ namespace GutterLines
             };
             Timer.Tick += new EventHandler(UpdateWindow);
             Timer.Start();
+        }
+
+        private void CreateContextMenu()
+        {
+            var notifyIcon = new NotifyIcon(components = new Container())
+            {
+                Icon = Properties.Resources.icon,
+                ContextMenu = new ContextMenu(new[]
+                {
+                    new MenuItem("Reset Window Position", ResetWindowPos),
+                    //alertToggle = new MenuItem($"Show When in Gutter (Current:{GetAlertToggleBool()})", ToggleAlert),
+                    new MenuItem("-"),
+                    new MenuItem("Exit GutterLines", ExitBtn_Click)
+                }),
+                Text = "GutterLines",
+                Visible = true
+            };
+        }
+
+        private void ToggleAlert(object sender, EventArgs e)
+        {
+            flashAlert = !flashAlert;
+            using (var key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\ByTribe\GutterLines"))
+            {
+                try
+                {
+                    key?.SetValue("alertToggle", flashAlert);
+                }
+                catch {/* If we cant write to the registry do nothing*/}
+            }
+            alertToggle.Text = $"Show When in Gutter (Current:{flashAlert})";
+        }
+
+        private bool GetAlertToggleBool()
+        {
+            using (var key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\ByTribe\GutterLines"))
+            {
+                try
+                {
+                    return Convert.ToBoolean(key?.GetValue("alertToggle"));
+                }
+                catch { return true; }
+            }
         }
 
         private void UpdateWindow(object sender, EventArgs e)
@@ -101,6 +151,42 @@ namespace GutterLines
             return Gutter - playerAxisPos + 20 + mod;
         }
 
+
+
+        private void SetWindowPos()
+        {
+            using (var key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\ByTribe\GutterLines"))
+            {
+                try
+                {
+                    Location = new Point((int)key?.GetValue("winX"), (int)key?.GetValue("winY"));
+                }
+                catch (Exception)
+                {
+                    Location = new Point(10, 10);
+                }
+            }
+        }
+
+        private void ResetWindowPos(object sender, EventArgs e)
+        {
+            SaveWindowPos(10, 10);
+            SetWindowPos();
+        }
+
+        private void SaveWindowPos(int winX, int winY)
+        {
+            using (var key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\ByTribe\GutterLines"))
+            {
+                try
+                {
+                    key?.SetValue("winX", winX);
+                    key?.SetValue("winY", winY);
+                }
+                catch {/* If we cant write to the registry do nothing*/}
+            }
+        }
+
         #region form controls
         private void Window_MouseDown(object sender, MouseEventArgs e)
         {
@@ -118,7 +204,13 @@ namespace GutterLines
         {
             memRead.GetProcess();
         }
+        private void Window_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveWindowPos(Location.X, Location.Y);
+        }
         #endregion
+
+
     }
 }
 
