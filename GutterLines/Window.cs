@@ -47,6 +47,7 @@ namespace GutterLines
         public Window()
         {
             InitializeComponent();
+            flashAlert = GetAlertToggleBool();
             CreateContextMenu();
             StartPosition = FormStartPosition.Manual;
             SetWindowPos();
@@ -70,7 +71,7 @@ namespace GutterLines
                 ContextMenu = new ContextMenu(new[]
                 {
                     new MenuItem("Reset Window Position", ResetWindowPos),
-                    //alertToggle = new MenuItem($"Show When in Gutter (Current:{GetAlertToggleBool()})", ToggleAlert),
+                    alertToggle = new MenuItem($"Show When in Gutter (Current:{flashAlert})", ToggleAlert),
                     new MenuItem("-"),
                     new MenuItem("Exit GutterLines", ExitBtn_Click)
                 }),
@@ -101,7 +102,7 @@ namespace GutterLines
                 {
                     return Convert.ToBoolean(key?.GetValue("alertToggle"));
                 }
-                catch { return true; }
+                catch { return false; }
             }
         }
 
@@ -115,7 +116,7 @@ namespace GutterLines
                 {
                     lat = gi.Lat;
                     lon = gi.Lon;
-                    DrawGutters(gi.Lat, gi.Lon);
+                    DrawGutters(gi.Lat, gi.Lon, GutterAlert());
                 }
             }
             else
@@ -124,10 +125,23 @@ namespace GutterLines
             }
         }
 
-        private void DrawGutters(int playerX, int playerY)
+        private Color GutterAlert()
+        {
+            if (flashAlert)
+            {
+                //check both lat and lon to see if the player is in a gutter line, if they are make the backgroud color non white
+                if (lat % 40 <= 4 || lon % 40 <= 4)
+                {
+                    return Color.Orange;
+                }
+            }
+            return Color.White;
+        }
+
+        private void DrawGutters(int playerX, int playerY, Color backCol)
         {
             Graphics g = gridMap.CreateGraphics();
-            g.Clear(gridMap.BackColor);
+            g.Clear(backCol);
             for (int i = 4; i >= 0; i--)
             {
                 var gutterPosX = GetGutterLinePos(playerX, i) * gridScale;

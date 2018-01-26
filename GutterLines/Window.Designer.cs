@@ -127,12 +127,12 @@
             this.BackgroundImage = global::GutterLines.Properties.Resources.back;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(158, 195);
+            this.Controls.Add(this.gridMap);
             this.Controls.Add(this.NextClientBtn);
             this.Controls.Add(this.titleLbl);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.ExitBtn);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.gridMap);
             this.Controls.Add(this.LatLonLbl);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
