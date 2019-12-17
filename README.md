@@ -1,5 +1,5 @@
 # GutterLines
-### This no longer works now that iRo is using EAC (project may be updated to work int he future)
+### This no longer works now that iRo is using EAC (project may be updated to work in the future)
 Gutter line viewer for Ragnarok iRo
 
 [Download link](https://github.com/miatribe/GutterLines/releases/download/1.5/GutterLines.zip)
