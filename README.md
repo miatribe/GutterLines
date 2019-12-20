@@ -2,7 +2,6 @@
 ### This no longer works now that iRo is using EAC (future TBD)
 Gutter line viewer for Ragnarok iRo
 
-~~[Download link](https://github.com/miatribe/GutterLines/releases/download/1.5/GutterLines.zip)~~
 
 [Youtube demo](https://youtu.be/hggU2WS2KyU)
 
